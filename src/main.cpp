@@ -38,14 +38,6 @@ int counter = 0;
 String pdc = "";
 
 int LenPDC ;
-int  pdcUnit;
-int tistou;
-int j;
-
-
-String STRduty;
-
-
 
 WebSocketsServer webSocket = WebSocketsServer(81); 
 
@@ -58,17 +50,7 @@ void readingFromFile(){
     counter = lenOfPdc/4;
     pdc_2 = round(counter*0.333);
     pdc_3 = round(counter*0.666);
-    Serial.print("pdc2 : ");
-    Serial.println(pdc_2);
-    Serial.print("pdc3 : ");
-    Serial.println(pdc_3);
-    if (lenOfPdc <= 0)
-    {
-        Serial.println("mkn welou ya hatba");
-    }
-    if(lenOfPdc > 0){Serial.println("kyn a mouley !!");}
-   
-    
+
     int j=0;
      for (size_t i = 0; i < lenOfPdc; i=i+4)
      {
@@ -86,13 +68,14 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
     switch(type) {
         case WStype_DISCONNECTED:
             Serial.println("Websocket is disconnected");
-        
+            
             //case when Websocket is disconnected
             break;
         case WStype_CONNECTED:{
             //wcase when websocket is connected
             Serial.println("Websocket is connected");
             Serial.println(webSocket.remoteIP(num).toString());
+            webSocket.sendTXT(num, "hallo");
         }
             break;
         case WStype_TEXT:
@@ -186,6 +169,7 @@ void loop() {
         if(y == counter ){
             y = 0;
         }
+        
         delayMicroseconds(44);
    }
 
