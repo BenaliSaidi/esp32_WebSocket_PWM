@@ -14,7 +14,7 @@ unsigned long CurrentTime = 0 ;
 unsigned long ElapsedTime = 0;
 unsigned long StartTime = 0;
 
-const int outputPWM_03 = 33;
+const int outputPWM_03 = 23;
 const int outputPWM_02 = 26;
 const int outputPWM_01 = 14;
 
@@ -23,7 +23,6 @@ const int resolution = 10;
 const int ledChannel_1 = 1;
 const int ledChannel_2 = 2;
 const int ledChannel_3 = 3;
-
 
 const char *ssid =  "ESP32";   
 const char *pass =  "00000000";
@@ -75,7 +74,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
             //wcase when websocket is connected
             Serial.println("Websocket is connected");
             Serial.println(webSocket.remoteIP(num).toString());
-            webSocket.sendTXT(num, "hallo");
+            webSocket.sendTXT(num, "hello");
         }
             break;
         case WStype_TEXT:
@@ -84,7 +83,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
                 pdc = pdc + (char) payload[i]; 
             }
 
-           // Serial.println(pdc);
+            Serial.println(pdc);
 
             LenPDC  = pdc.length();
             counter = LenPDC/4;
@@ -148,6 +147,10 @@ SPIFFS.begin();
 
 void loop() {
 
+
+
+    
+
     webSocket.loop(); 
     StartTime = millis();
     x = pdc_2;
@@ -162,7 +165,6 @@ void loop() {
         ledcWrite(ledChannel_2,pdc1_from_spiffs[x]);
         ledcWrite(ledChannel_3,pdc1_from_spiffs[y]);
 
-
         if(x == counter ){
             x = 0;
         }
@@ -171,7 +173,7 @@ void loop() {
         }
         
         delayMicroseconds(44);
-   }
+  }
 
     CurrentTime = millis();
     ElapsedTime = CurrentTime - StartTime;
@@ -180,6 +182,5 @@ void loop() {
     
     Serial.println(ElapsedTime);
    
- 
 }
 
